@@ -16,7 +16,7 @@ from genre.entity_linking import (
     get_end_to_end_prefix_allowed_tokens_fn_fairseq,
     get_end_to_end_prefix_allowed_tokens_fn_hf,
 )
-
+import torch
 
 def chunk_it(seq, num):
     assert num > 0
@@ -480,7 +480,7 @@ def get_wikidata_ids(
             return search_wikidata(result, label_or_alias2wikidataID), "wikidata"
 
 
-def post_process_wikidata(outputs, text_to_id=False, marginalize=False):
+def post_process_wikidata(outputs, text_to_id=False, marginalize=False, marginalize_lenpen=0.5, batched_hypos=None):
 
     if text_to_id:
         outputs = [
